@@ -1,0 +1,28 @@
+# Core AI framework
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-anthropic>=0.3.0
+
+# Anthropic SDK
+anthropic>=0.40.0
+
+# Research
+google-search-results>=2.4.2   # SERP API
+
+# Image generation (DALL-E fallback via OpenAI)
+openai>=1.50.0
+
+# Web interface
+streamlit>=1.40.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+PyYAML>=6.0
+requests>=2.32.0
+pillow>=10.0.0
+
+# Dev
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+black>=24.0.0
