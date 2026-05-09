@@ -2,7 +2,11 @@ import anthropic
 from src.core.config import config
 from src.workflow.state_management import AgentState
 
-client = anthropic.Anthropic(api_key=config.anthropic_api_key)
+from src.core.config import load_config
+
+def get_client():
+    import anthropic
+    return anthropic.Anthropic(api_key=load_config().anthropic_api_key)
 
 BLOG_PROMPT = """You are an expert SEO blog writer.
 Write a comprehensive, engaging, SEO-optimised blog post.
@@ -42,6 +46,7 @@ Important: Use the research to make the blog factual and credible."""
 def blog_writer_node(state: AgentState) -> AgentState:
     topic = state["topic"]
     research_output = state.get("research_output")
+    client = get_client()    # ← picks up Streamlit secrets
 
     try:
         # Choose prompt and message based on whether research exists

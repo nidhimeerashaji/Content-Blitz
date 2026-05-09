@@ -2,8 +2,11 @@ import anthropic
 from src.core.config import config
 from src.workflow.state_management import AgentState
 
-client = anthropic.Anthropic(api_key=config.anthropic_api_key)
+from src.core.config import load_config
 
+def get_client():
+    import anthropic
+    return anthropic.Anthropic(api_key=load_config().anthropic_api_key)
 STRATEGIST_PROMPT = """You are an expert content marketing strategist.
 Create a comprehensive content strategy and calendar.
 
@@ -27,6 +30,7 @@ def content_strategist_node(state: AgentState) -> AgentState:
     Creates a full content strategy and calendar for the topic.
     """
     topic = state["topic"]
+    client = get_client()    # ← picks up Streamlit secrets
 
     try:
         response = client.messages.create(

@@ -3,8 +3,15 @@ import openai
 from src.core.config import config
 from src.workflow.state_management import AgentState
 
-claude_client = anthropic.Anthropic(api_key=config.anthropic_api_key)
-openai_client = openai.OpenAI(api_key=config.openai_api_key)
+from src.core.config import load_config
+
+def get_claude_client():
+    import anthropic
+    return anthropic.Anthropic(api_key=load_config().anthropic_api_key)
+
+def get_openai_client():
+    import openai
+    return openai.OpenAI(api_key=load_config().openai_api_key)
 
 PROMPT_OPTIMIZER = """You are an expert at writing DALL-E image generation prompts.
 Convert the user's request into a detailed, optimised DALL-E 3 prompt.
@@ -25,6 +32,11 @@ def image_generator_node(state: AgentState) -> AgentState:
     Step 2 — DALL-E 3 generates the image
     """
     topic = state["topic"]
+    claude_client = get_claude_client()    # ← picks up Streamlit secrets
+    openai_client = get_openai_client()  
+    cfg    = load_config()
+    max_tokens = cfg.max_tokens
+    
 
     try:
         # Step 1 — Claude optimises the prompt
